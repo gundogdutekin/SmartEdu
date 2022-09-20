@@ -50,7 +50,12 @@ const loginUser = async(req, res) => {
     }
 }
 const logoutUser = (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
+    req.session.destroy((err) => {  
+        if(err) {
+            return console.log(err);
+        }else{
+            res.redirect('/');
+        }})
+    
 }
 export { createUser, loginUser, logoutUser }

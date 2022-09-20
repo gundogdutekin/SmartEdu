@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import ejs from 'ejs';
 import { pageRouter } from './routes/pageRoute.js';
 import { courseRouter } from './routes/courseRoute.js';
@@ -12,8 +13,9 @@ import { userRouter } from './routes/userRoute.js';
 const app = express();
 
 //Connect DB
+const dbURL = 'mongodb://localhost/smartedu-db';
 mongoose
-    .connect('mongodb://localhost/smartedu-db')
+    .connect(dbURL)
     .then(() => {
         console.log('DB CONNECTED SUCCESSFULLY');
     })
@@ -23,7 +25,7 @@ mongoose
 
 //Template Engine "EJS" Set
 app.set('view engine', 'ejs');
-
+//Global Variable Set
 global.userIN = null;
 //MIDDLEWARES
 //Session Middleware
@@ -31,6 +33,7 @@ app.use(session({
         secret: 'keyboard cat',
         resave: false,
         saveUninitialized: true,
+        store: MongoStore.create({ mongoUrl: dbURL })
     }))
     //Static Files Middleware
 app.use(express.static('public'));
