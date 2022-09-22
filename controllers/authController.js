@@ -29,7 +29,7 @@ const loginUser = async(req, res) => {
                         //SESSİON START
                         req.session.userID = user._id;
 
-                        res.status(200).redirect('/');
+                        res.status(200).redirect('/users/dashboard');
                     } else {
                         res.status(400).send("Şifre Hatalı");
                     }
@@ -58,4 +58,13 @@ const logoutUser = (req, res) => {
         }})
     
 }
-export { createUser, loginUser, logoutUser }
+const getDashboardPage = async(req, res) => {
+    const id=req.session.userID;
+    const user=await User.findById(id);
+    res.status(200).render('dashboard', {
+        page_name: 'dashboard',
+        user:user
+    })
+    
+}
+export { createUser, loginUser, logoutUser,getDashboardPage }
