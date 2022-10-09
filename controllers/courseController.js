@@ -4,11 +4,8 @@ import { Category } from '../models/Category.js';
 const creatCourse = async(req, res) => {
     try {
         const course = await Course.create(req.body);
-
-        res.status(201).json({
-            status: 'success',
-            course: course,
-        });
+        res.status(201).redirect('/courses');
+        
     } catch (error) {
         res.status(400).json({
             status: 'fail',
@@ -19,6 +16,7 @@ const creatCourse = async(req, res) => {
 const getAllCourses = async(req, res) => {
     try {
         const categorySlug = req.query.category;
+        console.log(categorySlug);
         const category = await Category.findOne({ slug: categorySlug });
         let filter = {};
         if (categorySlug) {
@@ -47,6 +45,7 @@ const getAllCourses = async(req, res) => {
 const getCourse = async(req, res) => {
     try {
         const course = await Course.findOne({ slug: req.params.slug });
+        console.dir(req.path)
         const categories = await Category.find();
         res.status(200).render('course', {
             course: course,
