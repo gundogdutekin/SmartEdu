@@ -26,6 +26,11 @@ const courseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Category',
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    
 });
 courseSchema.pre('validate', function(next) {
     this.slug = slugify(this.name, {

@@ -1,6 +1,7 @@
 import { Course } from '../models/Course.js';
 import { Category } from '../models/Category.js';
 
+
 const creatCourse = async(req, res) => {
     try {
         const course = await Course.create(req.body);
@@ -16,25 +17,24 @@ const creatCourse = async(req, res) => {
 const getAllCourses = async(req, res) => {
     try {
         const categorySlug = req.query.category;
-        console.log(categorySlug);
+        
         const category = await Category.findOne({ slug: categorySlug });
         let filter = {};
         if (categorySlug) {
             filter = { category: category._id };
         }
 
-        const courses = await Course.find(filter);
-
+        const courses = await Course.find(filter).populate('user').sort('-createdAt');
+    
         const categories = await Category.find();
         res.status(200).render('courses', {
             courses: courses,
             categories: categories,
             page_name: 'courses',
+           
+            
         });
-        /*  res.status(200).json({
-                                                                                status: 'success',
-                                                                                courses: courses,
-                                                                            }); */
+       
     } catch (error) {
         res.status(400).json({
             status: 'fail',
@@ -44,8 +44,8 @@ const getAllCourses = async(req, res) => {
 };
 const getCourse = async(req, res) => {
     try {
-        const course = await Course.findOne({ slug: req.params.slug });
-        console.dir(req.path)
+        const course = await Course.findOne({ slug: req.params.slug }).populate('user');
+    
         const categories = await Category.find();
         res.status(200).render('course', {
             course: course,

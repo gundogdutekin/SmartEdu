@@ -1,5 +1,6 @@
 import { User } from "../models/User.js";
 import { Category } from "../models/Category.js";
+import { Course } from '../models/Course.js';
 import bcrypt from 'bcrypt';
 
 
@@ -63,11 +64,13 @@ const logoutUser = (req, res) => {
 const getDashboardPage = async(req, res) => {
     const id=req.session.userID;
     const user=await User.findById(id);
+    const courses=await Course.find({user:id});
     const categories = await Category.find();
     res.status(200).render('dashboard', {
         page_name: 'dashboard',
         user:user,
-        categories: categories
+        categories: categories,
+        courses:courses
     })
     
 }
