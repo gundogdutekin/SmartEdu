@@ -22,7 +22,11 @@ const userSchema = new Schema({
         type: String,
         enum: ['student', 'teacher', 'admin'],
         default: 'student'
-    }
+    },
+    courses:[{   
+        type: Schema.Types.ObjectId,
+        ref: 'Course'
+    }]
 });
 userSchema.pre("save", function(next) {
     const user = this;

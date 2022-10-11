@@ -119,6 +119,28 @@
 										</div><!-- end row -->
 
 										<div class="row mt-5">
+											<% if(user.role==='student'){ %> 
+											<% user.courses.forEach(course=> { %>
+												<div class="col-lg-6 col-md-6 col-12">
+													<div class="course-item mb-5">
+														<div class="image-blog">
+															<img src="/images/blog_1.jpg" alt="" class="img-fluid">
+														</div>
+														<div class="course-br">
+															<div class="course-title">
+																<h2><a href="/courses/<%=course.slug %>" title=""><%=course.name %></a>
+																</h2>
+															</div>
+															<div class="course-desc">
+																<p><%=course.description %> </p>
+															</div>
+														</div>
+													</div>
+												</div><!-- end col -->
+											
+											<%}) %>
+
+											<% }%>
 											<% courses.forEach(course => { %>
 												
 											

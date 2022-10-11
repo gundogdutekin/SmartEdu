@@ -63,7 +63,7 @@ const logoutUser = (req, res) => {
 }
 const getDashboardPage = async(req, res) => {
     const id=req.session.userID;
-    const user=await User.findById(id);
+    const user=await User.findById(id).populate('courses');
     const courses=await Course.find({user:id});
     const categories = await Category.find();
     res.status(200).render('dashboard', {
@@ -71,7 +71,7 @@ const getDashboardPage = async(req, res) => {
         user:user,
         categories: categories,
         courses:courses
-    })
-    
+    }) 
 }
+  
 export { createUser, loginUser, logoutUser,getDashboardPage }

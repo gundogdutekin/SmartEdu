@@ -1,5 +1,6 @@
 import { Course } from '../models/Course.js';
 import { Category } from '../models/Category.js';
+import {User} from '../models/User.js';
 
 
 const creatCourse = async(req, res) => {
@@ -59,5 +60,20 @@ const getCourse = async(req, res) => {
         });
     }
 };
+const courseEnroll = async(req, res) => {
+    try {
+       const id=req.session.userID;
+       const user=await User.findById(id);
+       user.courses.push({ _id: req.body.courseId });
+       await user.save();
+       
+       res.status(200).redirect('/users/dashboard');
+    }catch(error){
+        res.status(400).json({
+            status: "fail",
+            error: error
+        })
+    }
+} 
 
-export { creatCourse, getAllCourses, getCourse };
+export { creatCourse, getAllCourses, getCourse,courseEnroll };
