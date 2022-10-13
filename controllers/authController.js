@@ -63,7 +63,7 @@ const logoutUser = (req, res) => {
 }
 const getDashboardPage = async(req, res) => {
     const id=req.session.userID;
-    const user=await User.findById(id).populate('courses');
+    const user=await User.findById(id).populate('courses').sort('-createdAt');;
     const courses=await Course.find({user:id});
     const categories = await Category.find();
     res.status(200).render('dashboard', {

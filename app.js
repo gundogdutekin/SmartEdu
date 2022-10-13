@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import session from "express-session";
+import flash from "connect-flash";
 import MongoStore from "connect-mongo";
 import ejs from 'ejs';
 import { pageRouter } from './routes/pageRoute.js';
@@ -35,7 +36,9 @@ app.use(session({
         saveUninitialized: true,
         store: MongoStore.create({ mongoUrl: dbURL })
     }))
-    //Static Files Middleware
+//Flash Middleware
+app.use(flash());
+//Static Files Middleware
 app.use(express.static('public'));
 //Post Request Middlewares
 app.use(express.json()); // for parsing application/json

@@ -28,15 +28,32 @@ const userSchema = new Schema({
         ref: 'Course'
     }]
 });
-userSchema.pre("save", function(next) {
-    const user = this;
-    bcrypt.hash(user.password, 10, (err, hash) => {
+userSchema.pre("save", async function(next) {
+    //const user = this;
+    try {
+        if (this.password && this.isModified('password')) {
+                this.password = await bcrypt.hash(this.password, 10, (err, hash) => {
+                if (err) {
+                    return next(err);
+                }
+                this.password = hash;
+                next();
+            })
+        }
+        
+      } catch (error) {
+        next(error);
+      }
+   
+
+
+   /*  bcrypt.hash(user.password, 10, (err, hash) => {
         if (err) {
             return next(err);
         }
         user.password = hash;
         next();
-    });
+    }); */
 
 })
 
